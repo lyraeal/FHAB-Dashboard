@@ -1,3 +1,4 @@
+
 library(shiny)
 library(bslib)
 library(rsconnect)
@@ -14,9 +15,11 @@ library(tidygeocoder)
 options(tigris_use_cache = TRUE)
 ui <- page_navbar(
   shinyWidgets::useShinydashboard(),
-  bg = '#8FBC8F',
+  bg = '#91cbef',
   title = "Known housing locations of top 12 worst landlords in Broome County",
   sidebar = sidebar(
+    title = "Landlord Information",
+    helpText("These landlords have sued the most tenants for eviction in Binghamton since the Emergency Eviction Moratorium ended in January 2022 (33 months)"),
     tags$style(
       HTML(
         ".box.box-solid.box-primary>.box-header {
@@ -39,8 +42,6 @@ ui <- page_navbar(
   ),
   box(
     solidHeader = TRUE,
-    title = "Landlord Information",
-    status = "primary",
     width = 12,
     htmlOutput("ui_text")
   )
@@ -50,7 +51,7 @@ ui <- page_navbar(
     icon = icon("location-dot"),
     card(
       card_title("Selected Address: "),
-      card_body(htmlOutput("address_text")),
+      card_body(htmlOutput("address_text1")),
       fill = F
     ),
     card(leafletOutput(outputId = "parcel")),
@@ -60,7 +61,7 @@ ui <- page_navbar(
         "action",
         " Zoom to Full Map View",
         icon = icon("search"),
-        style = "color: 'gray'; background-color: #8FBC8F; border-color: 'gray', padding-top=100px;"
+        style = "color: 'gray'; background-color: #91cbef; border-color: 'gray', padding-top=100px;"
       )
     )
   ),
@@ -69,7 +70,7 @@ ui <- page_navbar(
     icon = icon("house"),
     card(
       card_title("Selected Address: "),
-      card_body(htmlOutput("address_text")),
+      card_body(htmlOutput("address_text2")),
       fill = F
     ),
     card(uiOutput("image"))
@@ -88,7 +89,8 @@ server <- function(input, output, session) {
   )
   
   RV <-
-    reactiveValues(Clicks = "<span style = 'color: gray;'>Click a marker on the map or search for an address to get housing information</span>")
+    reactiveValues(Clicks = "<span style = 'color: gray;'>Click a marker on the map or search for an address to get landlord information</span>",
+                   add = "<span style = 'color: gray;'>Click a marker on the map or search for an address to get housing information</span>")
   counties <-
     counties(cb = TRUE, year = 2023, class = "sf") %>% st_transform(4326)
   st_crs(counties) = 4326
@@ -111,7 +113,7 @@ server <- function(input, output, session) {
       ) %>%
       addMarkers(
         data = sf_parcel,
-        icon = list(iconUrl = "https://www.iconpacks.net/icons/2/free-location-icon-2955-thumb.png",
+        icon = list(iconUrl = "files/blue-loc.png",
                     iconSize = c(25, 25))
       ) %>%
       addPolylines(data = broome_streets,
@@ -130,38 +132,34 @@ server <- function(input, output, session) {
       addMarkers(
         data = row,
         group = "SearchResult",
-        icon = list(iconUrl = "https://img.icons8.com/?size=100&id=7880&format=png&color=FA5252",
+        icon = list(iconUrl = "files/red-loc.png",
                     iconSize = c(25, 25))
       ) %>%
       setView(lng = jlon,
               lat = jlat,
               zoom = 16)
     RV$Clicks <- paste0(
-      # "<b>Address:</b> ",
-      # row$actaddress,
-      # "<br>",
       "<b>Landlord:</b> ",
       row$Landlord_Group,
-      "<br> <div class = 'a'> <b>",
-      "Other known aliases: </b>",
+      "<br><br> <div class = 'a'>",
+      "Other known aliases: ",
       paste0("<br>- ", paste0(
         str_split(row$Aliases_of_Group, ", ")[[1]], collapse = "<br>- "
-      )),
-      "<br><br></div>",
-      "</b>",
-      '<b>Ranking: </b>',
+      )), 
+      "<hr></div>",
+      "<b>Ranking: </b>",
       row$Ranking,
       " on our Worst Evictors List",
       "<br>",
-      "<b>Average evictions filed per year: </b>",
+      "<b>Average Evictions Filed per Year: </b>",
       row$Yearly_Filings,
       "<br>",
-      "<b>Total code violations for landlord: </b>",
+      "<b>Total Code Violations for Landlord: </b>",
       row$Total.Code.Violations.for.Landlord.Group,
       "<br>"
     )
     
-    RV$add = paste0(row$actaddress)
+    RV$add = row$actaddress
     
     RV$img = ""
     
@@ -190,7 +188,7 @@ server <- function(input, output, session) {
     print(RV$Clicks)
   })
   
-  output$address_text <- renderText({
+  output$address_text1 = output$address_text2 <- renderText({
     print(RV$add)
   })
   

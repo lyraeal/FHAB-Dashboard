@@ -2,3 +2,5 @@
 .Rhistory
 .RData
 .Ruserdata
+testapp.R
+.gitignore
