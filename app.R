@@ -481,7 +481,8 @@ server <- function(input, output, session) {
   output$bginfo = renderText({
     print(
       paste0(
-        '<li style="display:inline-block;">In 2019, the NYS Housing Stability & Tenant Protections Act significantly increased the rights and protections of renter households against landlord profiteering and exploitation. While these expansions were hard fought, tenants throughout the City of Binghamton continue to face discrimination - source of income, disability status, eviction history, household composition, etc. - when attempting to rent available units. Illegal practices are also pervasive in the form of “self-help evictions” as local landlords do everything they can to avoid submitting to legal court proceedings in order to carry out more immediate displacement.
+        '<li style="display:inline-block;">
+      In 2019, the NYS Housing Stability & Tenant Protections Act significantly increased the rights and protections of renter households against landlord profiteering and exploitation. While these expansions were hard fought, tenants throughout the City of Binghamton continue to face discrimination - source of income, disability status, eviction history, household composition, etc. - when attempting to rent available units. Illegal practices are also pervasive in the form of “self-help evictions” as local landlords do everything they can to avoid submitting to legal court proceedings in order to carry out more immediate displacement.
       <br><br>    
       Housing justice advocates in Binghamton have identified low enforcement rates of RPAPL §768, related to unlawful eviction attempts, by Binghamton Police and Broome County Sheriff Departments. Similarly, enforcement of the expanded protections within Landlord Tenant proceedings at City Court is often inconsistent. Local tenants cannot simply rely on the implementation of the 2019 changes when seeking to obtain or maintain rental housing. 
       <br><br>
@@ -489,11 +490,9 @@ server <- function(input, output, session) {
       <br><br>
       This dashboard is intended to fill that gap and will be updated + expanded annually to reflect landlords within the City who most frequently sue their tenants for eviction - a practice that, when serial or chronic, is commonly associated with poor property conditions and tenants rights violations.  The 12 landlords currently represented on this dashboard are responsible for 26% of all eviction filings in Binghamton post-COVID (1/15/2022-9/30/2024) and own an estimated 394 properties throughout Broome County.
       <br><hr>
-      This project was created in collaboration with the Fair Housing Advisory Board (FHAB) at Broome County. Please check out more information related to the FHAB at their website <a href="https://www.binghamtonhousingjustice.com/">here</a>.
+      This project was completed in collaboration with the Fair Housing Advisory Board of Broome County, Binghamton Tenants Union, and the Digital and Data Studies program at Binghamton University. More information on local housing justice efforts may be found <a href="https://www.binghamtonhousingjustice.com/">here</a>.
       <br><br>
-      The source code for this project can be found <a href="https://github.com/lyraeal/FHAB-Dashboard">here</a>. All data used in this project was obtained from FOIL requests, and properties were found by searching <a href="https://gis.broomecountyny.gov/website/apps/parcel_mapper/viewer.html">here</a>.
-      <br><br>
-      This dashboard currently has ', nrow(llord), ' landlords and ', nrow(hdat), ' known housing locations.'
+      The source code for this project can be found <a href="https://github.com/lyraeal/FHAB-Dashboard">here</a>. All eviction filing and Code violation data used in this project was obtained via Freedom of Information Law (FOIL) requests, with an identified date range between January 15, 2022 and September 30, 2024. Affiliated properties were found by searching <a href="https://gis.broomecountyny.gov/website/apps/parcel_mapper/viewer.html">here</a>.'
       )
     )
   })
