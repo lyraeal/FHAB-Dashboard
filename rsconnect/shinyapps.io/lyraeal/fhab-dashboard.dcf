@@ -1,0 +1,10 @@
+name: fhab-dashboard
+title:
+username: lyraeal
+account: lyraeal
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 14887162
+bundleId: 10403844
+url: https://lyraeal.shinyapps.io/fhab-dashboard/
+version: 1
